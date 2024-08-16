@@ -1,0 +1,128 @@
+<div class="card">
+<table>
+    <thead>
+      <tr>
+        <th>Product ID</th>
+        <th>Product Name</th>
+        <th>Quantity</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let inventory of inventories">
+        <td>{{ inventory.productID }}</td>
+        <td>{{ inventory.productName }}</td>
+        <td>{{ inventory.quantity }}</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="pagination-container">
+  <div class="pagination-controls">
+    <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1">Previous</button>
+
+    <span *ngFor="let page of [].constructor(totalPages); let i = index">
+      <button (click)="onPageChange(i + 1)" [class.active]="currentPage === i + 1">{{ i + 1 }}</button>
+    </span>
+
+    <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages">Next</button>
+  </div>
+
+  <div class="page-size-controls">
+    <label for="pageSize">Page Size:</label>
+    <select id="pageSize" (change)="onPageSizeChange($event)">
+      <option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>
+    </select>
+  </div>
+</div>
+  <!-- Add CSS styling directly within the HTML file -->
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 10px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 5px rgba(43, 200, 214, 0.1);
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      color: rgb(0, 0, 0);
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+
+    /* Container for pagination and page size controls */
+.pagination-container {
+  margin-top: 20px;
+  text-align: center;
+  align-items: center;
+}
+
+/* Pagination controls */
+.pagination-controls {
+  margin-bottom: 20px;
+}
+
+.pagination-controls button {
+  margin: 0 5px;
+  padding: 8px 12px;
+  border: none;
+  color: rgb(0, 0, 0);
+
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.pagination-controls button:hover:not([disabled]) {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.pagination-controls button.active {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.pagination-controls button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Page size controls */
+.page-size-controls {
+  display: inline-block;
+  margin-left: 20px;
+}
+
+.page-size-controls label {
+  margin-right: 8px;
+}
+
+.page-size-controls select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  color: #333;
+  cursor: pointer;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.page-size-controls select:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 4px rgba(76, 175, 80, 0.4);
+}
+    </style>
+  

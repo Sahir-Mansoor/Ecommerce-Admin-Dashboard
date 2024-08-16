@@ -1,0 +1,258 @@
+<style>
+/* Table Container */
+.table-container {
+  margin: 20px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+/* Table Styles */
+.receiving-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+}
+
+
+.receiving-table caption {
+  font-size: 1.5em;
+  margin: 10px 0;
+  color: #333;
+}
+
+/* Pagination Controls */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.pagination-button {
+  border: none;
+  color: black;
+  padding: 10px 15px;
+  margin: 0 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.pagination-button.disabled {
+  cursor: not-allowed;
+}
+
+/* Page Size Selector */
+.page-size-selector {
+  margin-left: 20px;
+}
+
+.page-size-selector select {
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* Popup styling */
+/* Popup styling */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px; /* Set a maximum width */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  text-align: center;
+  position: relative;
+  overflow-y: auto; /* Add vertical scroll if needed */
+  max-width: 400px;
+}
+
+.popup-content h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.popup-content label {
+  display: block;
+  text-align: left;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #333;
+}
+
+.popup-content input, .popup-content select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+.popup-content button {
+  width: 100%;
+  padding: 10px;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  border: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s;
+  margin-top: 10px; /* Add margin to separate from inputs */
+}
+
+
+.popup-content .close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #555;
+}
+
+.popup-content .close-button:hover {
+  color: #000;
+}
+
+.popup-content form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.popup-content .form-section {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex: 1;
+  margin-bottom: 10px;
+}
+
+.popup-content .form-section:last-of-type {
+  margin-bottom: 0; /* Remove margin from last section */
+}
+
+@media (max-width: 768px) {
+  .popup-content {
+    width: 95%; /* Ensure the popup fits smaller screens */
+  }
+}
+.container {
+      width: 100%;
+      margin: 0 auto;
+      font-family: Arial, sans-serif;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      color: black;
+      top: 0;
+      z-index: 2;
+    }
+</style>
+<!-- Receive Product Button -->
+ <div class="card">
+<button (click)="openPopup()" style="margin-bottom: 10px; padding: 10px 20px; color: black; border: none; cursor: pointer;">Receive Products</button>
+<div class="receiving-container">
+    <h2>Received Products</h2>
+    <table class="receiving-table">
+      <thead>
+        <tr>
+          <th>Receiving ID</th>
+          <th>Product Name</th>
+          <th>Quantity</th>
+          <th>Receiving Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let receiving of paginatedReceivings">
+          <td>{{ receiving.id }}</td>
+          <td>{{ receiving.productName}}</td>
+          <td>{{ receiving.quantity }}</td>
+          <td>{{ receiving.receivedDate | date: 'shortDate' }}</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <!-- Page Size Selector -->
+<div class="page-size-selector">
+  <label for="pageSize">Items per page:</label>
+  <select id="pageSize" [(ngModel)]="itemsPerPage" (change)="onPageSizeChange($event)">
+    <option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>
+  </select>
+</div>
+   <!-- Pagination Controls -->
+<div class="pagination-container">
+  <button
+    class="pagination-button"
+    [class.disabled]="currentPage === 1"
+    (click)="onPageChange(currentPage - 1)">
+    &laquo; Previous
+  </button>
+
+  <button
+    *ngFor="let page of pageNumbers"
+    class="pagination-button"
+    [class.disabled]="page === currentPage"
+    (click)="onPageChange(page)">
+    {{ page }}
+  </button>
+
+  <button
+    class="pagination-button"
+    [class.disabled]="currentPage === totalPages"
+    (click)="onPageChange(currentPage + 1)">
+    Next &raquo;
+  </button>
+</div>
+</div>
+<!-- Popup Form -->
+<div *ngIf="showPopup" class="popup-overlay">
+  <div class="popup-content">
+    <span (click)="closePopup()" class="close-button">&times;</span>
+    <h2>Receive Product</h2>
+    <form (ngSubmit)="onSubmit()">
+      <div>
+        <label for="productName">Product Name:</label>
+        <select id="productName" [(ngModel)]="selectedProductID" name="productName" required (change)="onProductChange($event)">
+          <option *ngFor="let product of products" [value]="product.productID">{{ product.product_Name }}</option>
+        </select>
+      </div>
+      <div>
+        <label for="quantity" >Quantity Received:</label>
+        <input type="number" id="quantity" [(ngModel)]="quantity" name="quantity" required>
+      </div>
+      <button type="submit" >Receive</button>
+    </form>
+  </div>
+  </div>

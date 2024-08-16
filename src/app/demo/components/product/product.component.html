@@ -1,0 +1,305 @@
+<div class="container">
+  <style>
+    .container {
+      width: 100%;
+      margin: 0 auto;
+      font-family: Arial, sans-serif;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      color: rgb(0, 0, 0);
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+/* Container for pagination and page size controls */
+.pagination-container {
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* Pagination controls */
+.pagination-controls {
+  margin-bottom: 20px;
+}
+
+.pagination-controls button {
+  margin: 0 5px;
+  padding: 8px 12px;
+  border: none;
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.pagination-controls button:hover:not([disabled]) {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.pagination-controls button.active {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.pagination-controls button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Page size controls */
+.page-size-controls {
+  display: inline-block;
+  margin-left: 20px;
+}
+
+.page-size-controls label {
+  margin-right: 8px;
+}
+
+.page-size-controls select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  color: #333;
+  cursor: pointer;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.page-size-controls select:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 4px rgba(76, 175, 80, 0.4);
+}
+
+
+
+    .add-product-button {
+      margin-bottom: 10px;
+      padding: 10px 20px;
+      color: rgb(8, 8, 8);
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+/* Popup styling */
+/* Popup styling */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px; /* Set a maximum width */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  text-align: center;
+  position: relative;
+  overflow-y: auto; /* Add vertical scroll if needed */
+  max-width: 400px;
+}
+
+.popup-content h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.popup-content label {
+  display: block;
+  text-align: left;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #333;
+}
+
+.popup-content input, .popup-content select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+.popup-content button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s;
+  margin-top: 10px; /* Add margin to separate from inputs */
+}
+
+.popup-content button:hover {
+  background-color: #0056b3;
+}
+
+.popup-content .close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #555;
+}
+
+.popup-content .close-button:hover {
+  color: #000;
+}
+
+.popup-content form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.popup-content .form-section {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex: 1;
+  margin-bottom: 10px;
+}
+
+.popup-content .form-section:last-of-type {
+  margin-bottom: 0; /* Remove margin from last section */
+}
+
+@media (max-width: 768px) {
+  .popup-content {
+    width: 95%; /* Ensure the popup fits smaller screens */
+  }
+}
+
+
+  </style>
+
+  <div class="card">
+  <button (click)="openPopup()" class="add-product-button">Insert Product</button>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Price</th>
+        <th>Category</th>
+        <th>Created At</th>
+        <th>Created By</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of products">
+        <td>{{ product.productID }}</td>
+        <td style="width: 15%; min-width: 5rem;">
+          <img src="assets/demo/images/product/{{product.product_Name}}.jpeg" class="shadow-4" alt="{{product.product_Name}}" width="50">
+      </td>
+        <td>{{ product.product_Name }}</td>
+        <td>{{ product.product_Description }}</td>
+        <td>{{ product.price | currency }}</td>
+        <td>{{ product.categoryName}}</td>
+        <td>{{ product.createdAt | date }}</td>
+        <td>{{ product.createdBy }}</td>
+        <td>{{ product.isActive ? 'Active' : 'Inactive' }}</td>
+        <td>
+          <button (click)="editProduct(product)" style="padding: 5px 10px; background-color: #007BFF; color: white; border: none; cursor: pointer;">Edit</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+  <div class="pagination-container">
+  <div class="pagination-controls">
+    <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1">Previous</button>
+
+    <span *ngFor="let page of [].constructor(totalPages); let i = index">
+      <button (click)="onPageChange(i + 1)" [class.active]="currentPage === i + 1">{{ i + 1 }}</button>
+    </span>
+
+    <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages">Next</button>
+  </div>
+
+  <div class="page-size-controls">
+    <label for="pageSize">Page Size:</label>
+    <select id="pageSize" (change)="onPageSizeChange($event)">
+      <option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>
+    </select>
+  </div>
+</div>
+
+<!-- Add/Edit Product Popup -->
+<div *ngIf="showpopup" class="popup-overlay">
+  <div class="popup-content">
+    <span (click)="closePopup()" class="close-button">&times;</span>
+    <h2>{{ isEditMode ? 'Edit Product' : 'Add Product' }}</h2>
+    <form>
+      <div>
+        <label for="productName">Product Name:</label>
+        <input type="text" id="productName" [(ngModel)]="productName" name="productName" required>
+      </div>
+      <div>
+        <label for="productDescription">Product Description:</label>
+        <input type="text" id="productDescription" [(ngModel)]="productDescription" name="productDescription" required>
+      </div>
+      <div>
+        <label for="price">Product Price:</label>
+        <input type="number" id="price" [(ngModel)]="price" name="price" required>
+      </div>
+      <div>
+        <label for="category">Product Category:</label>
+        <select id="category" [(ngModel)]="categoryName" name="category" required>
+          <option *ngFor="let cat of categories" [value]="cat.categoryID">{{ cat.category_Name }}</option>
+        </select>
+      </div>
+      <div>
+        <label for="createdBy">Created By:</label>
+        <input type="text" id="createdBy" [(ngModel)]="createdBy" name="createdBy" required>
+      </div>
+      <div>
+        <label for="isActive">Status:</label>
+        <select id="isActive" [(ngModel)]="isActive" name="isActive" required>
+          <option [ngValue]="true">Active</option>
+          <option [ngValue]="false">Inactive</option>
+        </select>
+      </div>
+      <button type="button" (click)="isEditMode ? updateProduct() : addProduct()">{{ isEditMode ? 'Update' : 'Add' }}</button>
+    </form>
+    </div>
+    </div>
+    </div>
+ 

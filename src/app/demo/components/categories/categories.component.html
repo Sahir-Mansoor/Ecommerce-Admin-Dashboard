@@ -1,0 +1,197 @@
+
+<div class="card">
+<div>
+  <h2>Categories</h2>
+
+  <button (click)="openPopup()" class="btn btn-primary">Insert Category</button>
+  
+  <!-- Popup form -->
+  <div *ngIf="showpopup" class="popup-overlay">
+    <div class="popup-form">
+            <span (click)="closePopup()" class="popup-close">&times; </span>
+                  <h2>{{ isEditMode ? 'Edit Category' : 'Add New Category' }}</h2>
+      <form>
+        <div class="form-group">
+          <label for="category_Name" style="display: block; text-align: left; margin-bottom: 5px;">Name:</label>
+          <input type="text" id="category_Name" [(ngModel)]="category_Name" name="category_Name" required style="width: 100%; padding: 8px;">
+        </div>
+        <div style="margin-bottom: 20px;">
+          <label for="isActive" style="display: block; text-align: left; margin-bottom: 5px;">Status:</label>
+          <select id="isActive" [(ngModel)]="isActive" name="isActive" required style="width: 100%; padding: 8px;">
+            <option [ngValue]="true">Active</option>
+            <option [ngValue]="false">Inactive</option>
+          </select>
+        </div>
+        <button type="button" (click)="isEditMode ? updateCategory() : addCategory()" style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer;">
+          {{ isEditMode ? 'Update Category' : 'Add Category' }}
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <table class="categories-table">
+        <thead>
+      <tr>
+        <th pSortableColumn="name">Id <p-sortIcon field="name"></p-sortIcon></th>        <th >Name</th>
+        <th >Status</th>
+        <th >Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let category of paginatedReceivings">
+        <td>{{ category.categoryID }}</td>
+        <td>{{ category.category_Name }}</td>
+        <td >{{ category.isActive ? 'Active' : 'Inactive' }}</td>
+        <td>
+          <button (click)="editCategory(category)" class="btn btn-edit" >Edit</button>
+          <button (click)="deleteCategory(category.categoryID , category.category_Name)" class="btn btn-delete">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+<!-- Pagination Controls -->
+<div class="pagination-container">
+  <button class="pagination-button" [class.disabled]="currentPage === 1" (click)="onPageChange(currentPage - 1)">
+    &laquo; Previous
+  </button>
+
+  <button *ngFor="let page of pageNumbers" class="pagination-button" [class.disabled]="page === currentPage" (click)="onPageChange(page)">
+    {{ page }}
+  </button>
+
+  <button class="pagination-button" [class.disabled]="currentPage === totalPages" (click)="onPageChange(currentPage + 1)">
+    Next &raquo;
+  </button>
+</div>
+
+<!-- Page Size Selector -->
+<div class="page-size-controls">
+  <label for="pageSize">Items per page:</label>
+  <select id="pageSize" [(ngModel)]="itemsPerPage" (change)="onPageSizeChange($event)" class="form-control">
+    <option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>
+  </select>
+</div>
+
+<style>
+  .btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  color:black;
+  cursor: pointer;
+}
+
+
+
+/* Popup form styling */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-form {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 300px;
+  text-align: center;
+  position: relative;
+}
+
+.popup-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Table styling */
+.categories-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      color: black;
+      top: 0;
+      z-index: 2;
+    }
+
+/* Form group styling */
+.form-group {
+  margin-bottom: 10px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 8px;
+}
+
+  /* Pagination controls styling */
+.pagination-container {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.pagination-button {
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  margin: 0 2px;
+}
+
+.pagination-button.disabled {
+  cursor: not-allowed;
+}
+
+/* Page size controls */
+.page-size-controls {
+  display: inline-block;
+  margin-left: 20px;
+}
+
+.page-size-controls label {
+  margin-right: 8px;
+}
+
+.page-size-controls select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  color: #333;
+  cursor: pointer;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.page-size-controls select:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 4px rgba(76, 175, 80, 0.4);
+}
+
+
+</style>

@@ -1,0 +1,46 @@
+<div class="layout-topbar">
+    <a class="layout-topbar-logo">
+        <img src="assets/layout/images/{{layoutService.config().colorScheme === 'light' ? 'logo-dark' : 'logo-white'}}.svg" alt="logo">
+        <span>E-COMMERCE</span>
+    </a>
+    <button #menubutton 
+    [class.open]="!layoutService.state.staticMenuDesktopInactive"
+    class="layout-menu-button layout-topbar-button" 
+    (click)="layoutService.onMenuToggle()">
+        <i class="pi pi-bars"></i>
+    </button>
+
+    <div class="layout-topbar-menu" [ngClass]="{ 'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible }">
+        <span style="margin: auto;">{{ getUsername() }}</span>
+           <button class="p-link layout-topbar-button" (click)="isUserLoggedIn() ? logout() : login()">
+            {{ isUserLoggedIn() ? 'Logout' : 'Login' }}
+        </button>
+</div>
+    
+<style>
+    /* Sidebar */
+.sidebar {
+    width: 100px; /* Adjust based on your sidebar's width */
+    position: fixed; /* Keeps the sidebar fixed on the page */
+    left: 0;
+    bottom: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Button to toggle sidebar */
+.bottom-left-button {
+    position: relative; /* Relative to the sidebar */
+    bottom: 0; /* Distance from the bottom of the sidebar */
+    left: 0; /* Distance from the left of the sidebar */
+    color: rgb(0, 0, 0); /* Optional: for visibility */
+    background-color: white;
+    border: none; /* Optional: for cleaner look */
+    padding: 4px; /* Optional: for better sizing */
+    cursor: pointer; /* Optional: for better UX */
+    margin-top: 70px;
+    margin-left: 0px;
+}
+
+</style>

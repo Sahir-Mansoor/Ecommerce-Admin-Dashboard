@@ -1,0 +1,237 @@
+
+<div class="card">
+    <table>
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Status</th>
+            <th>Order Date</th>
+            <th>ORDER BY</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of paginatedOrders">
+            <td>{{ order.id }}</td>
+            <td>{{ order.orderStatus }}</td>
+            <td>{{order.order_Date | date: 'shortDate' }}</td>
+            <td>{{ order.order_By }}</td>
+            <td><button class="view-details-button" (click)="viewOrderDetails(order.id)">View Details</button></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    
+      <div class="pagination-container">
+        <div class="pagination-controls">
+          <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1">Previous</button>
+      
+          <span *ngFor="let page of [].constructor(totalPages); let i = index">
+            <button (click)="onPageChange(i + 1)" [class.active]="currentPage === i + 1">{{ i + 1 }}</button>
+          </span>
+          <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages">Next</button>
+        </div>
+        <div class="page-size-controls">
+          <label for="pageSize">Page Size:</label>
+          <select id="pageSize" (change)="onPageSizeChange($event)">
+            <option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>
+          </select>
+        </div>
+      </div>
+      
+  <div class="popup" *ngIf="isPopupVisible">
+    <div class="popup-content">
+      <span class="close-button" (click)="closePopup()">&times;</span>
+      <h3>Order Details</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Order Detail ID</th>
+            <th>Product Name</th>
+            <th>Quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let detail of orderDetails">
+            <td>{{ detail.orderDetailID }}</td>
+            <td>{{ detail.product_Name }}</td>
+            <td>{{ detail.quantity }}</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+      </div>
+      
+<style>
+      table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 10px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 5px rgba(43, 200, 214, 0.1);
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      color: rgb(0, 0, 0);
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+/* Popup container to cover the entire viewport */
+.popup {
+  z-index: 1000; /* Ensure it is above other content */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  overflow: auto;
+}
+
+/* Pagination controls */
+.pagination-controls {
+  margin-bottom: 20px;
+}
+
+.pagination-controls button {
+  margin: 0 5px;
+  padding: 8px 12px;
+  border: none;
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.pagination-controls button:hover:not([disabled]) {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.pagination-controls button.active {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.pagination-controls button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Page size controls */
+.page-size-controls {
+  display: inline-block;
+  margin-left: 20px;
+}
+
+.page-size-controls label {
+  margin-right: 8px;
+}
+
+.page-size-controls select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.page-size-controls select:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 4px rgba(76, 175, 80, 0.4);
+}
+
+/* Popup content styling */
+.popup-content {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 80%;
+  max-width: 600px; /* Maximum width for better readability */
+  padding: 20px;
+  margin: 20px;
+}
+
+/* Close button styling */
+.popup-content button {
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Table styling within the popup */
+.popup-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.popup-content th, .popup-content td {
+  border: 1px solid #000000;
+  padding: 10px;
+  text-align: left;
+}
+
+.popup-content th {
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+}
+
+
+.close-button {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+/* Styling for the "View Details" button */
+.view-details-button {
+  color: black; /* White text */
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition:transform 0.2s;
+  font-size: 12px;
+  text-align: center;
+}
+
+.view-details-button:hover {
+  transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
+
+.view-details-button:focus {
+  outline: none; /* Remove default focus outline */
+  box-shadow: 0 0 0 3px rgba(157, 36, 185, 0.3); /* Add a subtle shadow on focus */
+}
+
+
+</style>
+    

@@ -1,0 +1,53 @@
+<!-- <button class="layout-config-button p-link" type="button" (click)="onConfigButtonClick()">
+    <i class="pi pi-eye"></i>
+</button>
+
+<p-sidebar [(visible)]="visible" position="left" [transitionOptions]="'.3s cubic-bezier(0, 0, 0.2, 1)'" styleClass="layout-config-sidebar w-20rem">
+    <ul class="menu-list">
+        <ng-container *ngFor="let item of model[0].items; let i = index;">
+            <li *ngIf="!item.separator" class="menu-item" >
+                <a [routerLink]="item.routerLink[0]" class="menu-link">
+                    <i [class]="item.icon"></i>
+                    <span>
+                        {{item.label}}
+                    </span>
+                </a>
+            </li>
+            <li *ngIf="item.separator" class="menu-separator"></li>
+        </ng-container>
+    </ul>
+</p-sidebar>
+
+<style>
+    .menu-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.menu-item {
+    padding: 10px;
+}
+
+.menu-link {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: inherit;
+}
+
+.menu-link:hover {
+    background-color: #f0f0f0;
+}
+
+.menu-link i {
+    margin-right: 10px;
+}
+
+.menu-separator {
+    height: 1px;
+    background-color: #ddd;
+    margin: 5px 0;
+}
+
+</style> -->

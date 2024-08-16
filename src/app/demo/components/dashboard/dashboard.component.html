@@ -1,0 +1,171 @@
+    <div class="grid">
+        <div class="col-12 lg:col-6 xl:col-3">
+            <div class="card mb-0" style="height: 150px;">
+                <div class="flex justify-content-between mb-3">
+                    <div>
+                        <span class="block text-500 font-medium mb-3">Total Orders</span>
+                        <div class="text-900 font-medium text-xl">{{totalorders}}</div>
+                    </div>
+                    <div class="flex align-items-center justify-content-center bg-blue-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                        <i class="pi pi-shopping-cart text-blue-500 text-xl"></i>
+                    </div>
+                </div>
+                <div>
+                <span class="text-500">Completed Orders </span>
+                <span class="text-green-500 font-medium">{{totalCompletedOrders}}</span>
+            </div>
+                <span class="text-500, mr-auto">Pending Orders </span>
+                    <span class="text-green-500 font-medium"> {{pendingOrders}}</span>
+            </div>
+        </div>
+        <div class="col-12 lg:col-6 xl:col-3">
+            <div class="card mb-0" style="height: 150px;" >
+                <div class="flex justify-content-between mb-3">
+                    <div>
+                        <span class="block text-500 font-medium mb-3">Revenue</span>
+                        <div class="text-900 font-medium text-xl">{{totalCompletedOrderAmount}}</div>
+                    </div>
+                    <div class="flex align-items-center justify-content-center bg-orange-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                        <i class="pi pi-dollar text-orange-500 text-xl"></i>
+                    </div>
+                </div>
+                <span>From</span>
+                <span class="text-green-500 font-medium"> {{totalCompletedOrders}} </span>
+                <span class="text-500">Completed Orders</span>
+            </div>
+        </div>
+        <div class="col-12 lg:col-6 xl:col-3">
+            <div class="card mb-0" style="height: 150px;">
+                <div class="flex justify-content-between mb-3">
+                    <div>
+                        <span class="block text-500 font-medium mb-3" >Total Customers</span>
+                        <div class="text-900 font-medium text-xl">{{totalcustomer}}</div>
+                    </div>
+                    <div class="flex align-items-center justify-content-center bg-cyan-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                        <i class="pi pi-users text-cyan-500 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 lg:col-6 xl:col-3"  >
+            <div class="card mb-0" style="height: 150px;">
+                <div class="flex justify-content-between mb-3">
+                    <div>
+                        <span class="block text-500 font-medium mb-3">Total Products</span>
+                        <div class="text-900 font-medium text-xl">{{totalproducts}}</div>
+                    </div>
+                    <div class="flex align-items-center justify-content-center bg-purple-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                        <i class="pi pi-reddit text-purple-500 text-xl"></i>
+                    </div>
+                </div>
+                <span>From </span>
+                <span class="text-green-500 font-medium">{{totalcat}}</span>
+                <span class="text-500"> Categories</span>
+            </div>
+        </div>
+        <div class="col-12 xl:col-6">
+            <div class="card">
+                <h5>Recent Sales</h5>
+                <p-table [value]="recentSales" [paginator]="true" [rows]="5" responsiveLayout="scroll">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Image</th>
+                            <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+                            <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
+                            <th pSortableColumn="quantity">Quantity <p-sortIcon field="quantity"></p-sortIcon></th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-product>
+                        <tr>
+                            <td style="width: 15%; min-width: 5rem;">
+                                <img src="assets/demo/images/product/{{product.name}}.jpeg" class="shadow-4" alt="{{product.name}}" width="50">
+                                <!-- <img src="assets/demo/images/product/{{product.image}}" class="shadow-4" alt="{{product.name}}" width="50"> -->
+                            </td>
+                            <td style="width: 35%; min-width: 7rem;">{{product.name}}</td>
+                            <td style="width: 35%; min-width: 8rem;">{{product.price | currency:'USD'}}</td>
+                            <td style="width: 35%; min-width: 9rem;">{{product.quantity}}</td>
+
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+            
+            <div class="card">
+                <div class="flex justify-content-between align-items-center mb-5">
+                    <h5>Best Selling Products</h5>
+                    <div>
+                        <button pButton type="button" icon="pi pi-ellipsis-v" class="p-button-rounded p-button-text p-button-plain" (click)="menu.toggle($event)"></button>
+                        <p-menu #menu [popup]="true" [model]="items"></p-menu>
+                    </div>
+                </div>
+                <ul class="list-none p-0 m-0">
+                    <li *ngFor="let product of bestSellingProducts" class="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-4">
+                        <div>
+                          <span class="text-900 font-medium mr-2 mb-1 md:mb-0">{{ product.product_Name }}</span>
+                          <div class="mt-1 text-600">{{ product.category_Name }}</div>
+                        </div>
+                        <div class="mt-2 md:mt-0 flex align-items-center">
+                          <div class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem" [ngStyle]="{ height: '8px' }">
+                            <div class="bg-green-500 h-full" [ngStyle]="{ width: (product.totalQuantity / maxQuantity * 100) + '%' }"></div>
+                          </div>
+                          <span class="text-green-500 ml-3 font-medium">{{ (product.totalQuantity / maxQuantity * 100).toFixed(0)}}%</span>
+                        </div>
+                      </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-12 xl:col-6">
+            <div class="card">
+                <h5>Sales Overview</h5>
+                <p-chart type="line" [data]="chartData" [options]="chartOptions"></p-chart>
+            </div>
+<!-- 
+            <div class="card">
+                <div class="flex align-items-center justify-content-between mb-4">
+                    <h5>Notifications</h5>
+                    <div>
+                        <button pButton type="button" icon="pi pi-ellipsis-v" class="p-button-rounded p-button-text p-button-plain" (click)="menu.toggle($event)"></button>
+                        <p-menu #menu [popup]="true" [model]="items"></p-menu>
+                    </div>
+                </div>
+
+                <span class="block text-600 font-medium mb-3">TODAY</span>
+                <ul class="p-0 mx-0 mt-0 mb-4 list-none">
+                    <li class="flex align-items-center py-2 border-bottom-1 surface-border">
+                        <div class="w-3rem h-3rem flex align-items-center justify-content-center bg-blue-100 border-circle mr-3 flex-shrink-0">
+                            <i class="pi pi-dollar text-xl text-blue-500"></i>
+                        </div>
+                        <span class="text-900 line-height-3">Richard Jones
+                    <span class="text-700"> has purchased a blue t-shirt for <span class="text-blue-500">79$</span></span>
+                </span>
+                    </li>
+                    <li class="flex align-items-center py-2">
+                        <div class="w-3rem h-3rem flex align-items-center justify-content-center bg-orange-100 border-circle mr-3 flex-shrink-0">
+                            <i class="pi pi-download text-xl text-orange-500"></i>
+                        </div>
+                        <span class="text-700 line-height-3">Your request for withdrawal of <span class="text-blue-500 font-medium">2500$</span> has been initiated.</span>
+                    </li>
+                </ul>
+
+                <span class="block text-600 font-medium mb-3">YESTERDAY</span>
+                <ul class="p-0 m-0 list-none">
+                    <li class="flex align-items-center py-2 border-bottom-1 surface-border">
+                        <div class="w-3rem h-3rem flex align-items-center justify-content-center bg-blue-100 border-circle mr-3 flex-shrink-0">
+                            <i class="pi pi-dollar text-xl text-blue-500"></i>
+                        </div>
+                        <span class="text-900 line-height-3">Keyser Wick
+                    <span class="text-700"> has purchased a black jacket for <span class="text-blue-500">59$</span></span>
+                </span>
+                    </li>
+                    <li class="flex align-items-center py-2 border-bottom-1 surface-border">
+                        <div class="w-3rem h-3rem flex align-items-center justify-content-center bg-pink-100 border-circle mr-3 flex-shrink-0">
+                            <i class="pi pi-question text-xl text-pink-500"></i>
+                        </div>
+                        <span class="text-900 line-height-3">Jane Davis<span class="text-700"> has posted a new questions about your product.</span></span>
+                    </li>
+                </ul>
+            </div>
+ -->
+            
+
